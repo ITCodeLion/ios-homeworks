@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DF32A9B627F5B0100032F5FE /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF32A9B527F5B0100032F5FE /* ProfileHeaderView.swift */; };
 		DF7FA08427E27E3C00F5C3EC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7FA08327E27E3C00F5C3EC /* AppDelegate.swift */; };
 		DF7FA08627E27E3C00F5C3EC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7FA08527E27E3C00F5C3EC /* SceneDelegate.swift */; };
 		DF7FA08827E27E3C00F5C3EC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7FA08727E27E3C00F5C3EC /* ViewController.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DF32A9B527F5B0100032F5FE /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		DF7FA08027E27E3C00F5C3EC /* Navigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF7FA08327E27E3C00F5C3EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DF7FA08527E27E3C00F5C3EC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +47,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DF32A9B727F5B0410032F5FE /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				DF32A9B527F5B0100032F5FE /* ProfileHeaderView.swift */,
+				DF7FA09F27EB21CA00F5C3EC /* ProfileViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		DF7FA07727E27E3C00F5C3EC = {
 			isa = PBXGroup;
 			children = (
@@ -64,13 +75,13 @@
 		DF7FA08227E27E3C00F5C3EC /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				DF32A9B727F5B0410032F5FE /* Profile */,
 				DF7FA08327E27E3C00F5C3EC /* AppDelegate.swift */,
 				DF7FA08527E27E3C00F5C3EC /* SceneDelegate.swift */,
 				DF7FA0A127EB240100F5C3EC /* TabBarController.swift */,
 				DF7FA0A327EC76DB00F5C3EC /* FeedViewController.swift */,
 				DF7FA0A527ECF9E100F5C3EC /* PostViewController.swift */,
 				DF7FA0A727ECFD7300F5C3EC /* InfoViewController.swift */,
-				DF7FA09F27EB21CA00F5C3EC /* ProfileViewController.swift */,
 				DF7FA08727E27E3C00F5C3EC /* ViewController.swift */,
 				DF7FA08C27E27E3E00F5C3EC /* Assets.xcassets */,
 				DF7FA08E27E27E3E00F5C3EC /* LaunchScreen.storyboard */,
@@ -153,6 +164,7 @@
 				DF7FA08427E27E3C00F5C3EC /* AppDelegate.swift in Sources */,
 				DF7FA0A627ECF9E100F5C3EC /* PostViewController.swift in Sources */,
 				DF7FA0A027EB21CA00F5C3EC /* ProfileViewController.swift in Sources */,
+				DF32A9B627F5B0100032F5FE /* ProfileHeaderView.swift in Sources */,
 				DF7FA0A227EB240100F5C3EC /* TabBarController.swift in Sources */,
 				DF7FA0A427EC76DB00F5C3EC /* FeedViewController.swift in Sources */,
 				DF7FA0A827ECFD7300F5C3EC /* InfoViewController.swift in Sources */,
