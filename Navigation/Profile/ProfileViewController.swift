@@ -43,7 +43,6 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([ topConstraint, leadingConstraint, trailingConstraint, self.heightConstraint].compactMap({ $0 }))
         
     }
-    
 }
 
 extension ProfileViewController: ProfileHeaderViewProtocol {
@@ -51,7 +50,7 @@ extension ProfileViewController: ProfileHeaderViewProtocol {
     func didTapStatusButton(textFieldIsVisible: Bool, completion: @escaping () -> ()) {
         self.heightConstraint?.constant = textFieldIsVisible ? 288 : 234
         
-        UIView.animate(withDuration: 0.5, delay: 0.0) {
+        UIView.animate(withDuration: 0.3, delay: 0.0) {
             self.view.layoutIfNeeded()
         } completion: { _ in
             completion()

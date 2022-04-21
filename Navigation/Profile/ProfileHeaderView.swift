@@ -28,21 +28,18 @@ final class ProfileHeaderView: UIView {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .white
         label.layer.cornerRadius = 10.0
-        //label.contentMode = .scaleAspectFit
         label.clipsToBounds = true
         label.text = "Cool dog"
         label.textColor = .black
-        label.font = UIFont(name: "Zapfino", size: 18)
-        //label.font = UIFont.boldSystemFont(ofSize: 18)
+        //label.font = UIFont(name: "Zapfino", size: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var statusLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .white
         label.layer.cornerRadius = 10.0
         label.text = "Waiting for something..."
         label.textColor = .gray
@@ -77,10 +74,8 @@ final class ProfileHeaderView: UIView {
     private lazy var statusButton: UIButton = {
         let button = UIButton()
         button.setTitle("Change status", for: .normal)
-        //button.setTitle("Set status", for: .selected) //??
         button.setTitleColor(.black, for: .normal)
-        
-        button.setTitleColor(.black, for: .selected) //???
+        button.setTitleColor(.black, for: .selected)
         
         button.backgroundColor = .systemYellow
         button.layer.cornerRadius = 4.0
@@ -88,9 +83,7 @@ final class ProfileHeaderView: UIView {
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOffset = CGSize(width: 4, height: 4)
         button.layer.shadowRadius = 4
-        button.layer.shadowOpacity = 0.7
-        //button.layer.masksToBounds = false
-        //button.clipsToBounds = true
+        button.layer.shadowOpacity = 0.3
         button.addTarget(self, action: #selector(self.didTapStatusButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -142,7 +135,7 @@ final class ProfileHeaderView: UIView {
         let leadingConstraint = self.horizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
         let trailingConstraint = self.horizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         
-        let heightConstraint = self.horizontalStackView.heightAnchor.constraint(equalToConstant: 160) //
+        let heightConstraint = self.horizontalStackView.heightAnchor.constraint(equalToConstant: 160)
         
         let imageViewAspectRatio = self.imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 1.0)
         
@@ -150,10 +143,9 @@ final class ProfileHeaderView: UIView {
         self.buttonTopConstraint?.priority = UILayoutPriority(rawValue: 999)
         let leadingButtonConstraint = self.statusButton.leadingAnchor.constraint(equalTo: self.horizontalStackView.leadingAnchor)
         let trailingButtonConstraint = self.statusButton.trailingAnchor.constraint(equalTo: self.horizontalStackView.trailingAnchor)
-       // let bottomButtonConstraint = self.statusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         let heightButtonConstraint = self.statusButton.heightAnchor.constraint(equalToConstant: 50)
         
-        NSLayoutConstraint.activate([ heightConstraint, topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, self.buttonTopConstraint, leadingButtonConstraint, trailingButtonConstraint, heightButtonConstraint].compactMap( {$0 })) // bottomButtonConstraint,
+        NSLayoutConstraint.activate([ heightConstraint, topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, self.buttonTopConstraint, leadingButtonConstraint, trailingButtonConstraint, heightButtonConstraint].compactMap( {$0 }))
         
     }
     
