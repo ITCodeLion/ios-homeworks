@@ -18,6 +18,7 @@
 		DF7FA0A427EC76DB00F5C3EC /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7FA0A327EC76DB00F5C3EC /* FeedViewController.swift */; };
 		DF7FA0A627ECF9E100F5C3EC /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7FA0A527ECF9E100F5C3EC /* PostViewController.swift */; };
 		DF7FA0A827ECFD7300F5C3EC /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7FA0A727ECFD7300F5C3EC /* InfoViewController.swift */; };
+		DFBE817B28194D640098FDBC /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBE817A28194D640098FDBC /* LogInViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		DF7FA0A327EC76DB00F5C3EC /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		DF7FA0A527ECF9E100F5C3EC /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		DF7FA0A727ECFD7300F5C3EC /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		DFBE817A28194D640098FDBC /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +53,7 @@
 			isa = PBXGroup;
 			children = (
 				DF32A9B527F5B0100032F5FE /* ProfileHeaderView.swift */,
+				DFBE817A28194D640098FDBC /* LogInViewController.swift */,
 				DF7FA09F27EB21CA00F5C3EC /* ProfileViewController.swift */,
 			);
 			path = Profile;
@@ -168,6 +171,7 @@
 				DF7FA0A227EB240100F5C3EC /* TabBarController.swift in Sources */,
 				DF7FA0A427EC76DB00F5C3EC /* FeedViewController.swift in Sources */,
 				DF7FA0A827ECFD7300F5C3EC /* InfoViewController.swift in Sources */,
+				DFBE817B28194D640098FDBC /* LogInViewController.swift in Sources */,
 				DF7FA08627E27E3C00F5C3EC /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
