@@ -22,6 +22,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         self.setupNavigationBar()
         self.setupView()
+        self.tapGesture()
     }
     
     private func setupNavigationBar() {
@@ -43,7 +44,15 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([ topConstraint, leadingConstraint, trailingConstraint, self.heightConstraint].compactMap({ $0 }))
         
     }
+    
+    private func tapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self.view, action: #selector(view.endEditing))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
 }
+
+// MARK: - ProfileHeaderViewProtocol
 
 extension ProfileViewController: ProfileHeaderViewProtocol {
     

@@ -190,3 +190,4 @@ final class ProfileHeaderView: UIView {
         self.delegate?.didTapStatusButton(textFieldIsVisible: self.textField.isHidden) { [weak self] in self?.textField.isHidden.toggle() }
     }
 }
+
