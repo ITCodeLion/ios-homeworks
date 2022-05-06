@@ -134,7 +134,6 @@ final class ProfileHeaderView: UIView {
         let topConstraint = self.horizontalStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8)
         let leadingConstraint = self.horizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
         let trailingConstraint = self.horizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
-        
         let heightConstraint = self.horizontalStackView.heightAnchor.constraint(equalToConstant: 160)
         
         let imageViewAspectRatio = self.imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 1.0)
