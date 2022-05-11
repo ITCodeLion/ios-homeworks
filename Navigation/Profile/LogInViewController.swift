@@ -196,7 +196,7 @@ class LogInViewController: UIViewController {
     
     @objc private func didTapLogInButton(_ sender: UIButton) {
         sender.alpha = 0.5
-        let profileVC = ProfileViewController()
+        let profileVC = ProfileViewController() //PhotosTableController()//
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { sender.alpha = 1.0
             self.navigationController?.pushViewController(profileVC, animated: true)
         }

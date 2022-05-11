@@ -18,7 +18,9 @@ class ProfileViewController: UIViewController {
         tableView.delegate = self
         tableView.backgroundColor = .systemGray5
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.identifier)
-        
+//        tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableController.identifier)
+//        tableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileHeaderView.identifier)
+        tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
         return tableView
     }()
     
@@ -61,7 +63,7 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return post.count
+        return post.count + 1
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -69,17 +71,19 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-//        var context: UIListContentConfiguration = cell.defaultContentConfiguration()
-//        context.text = "Секция = \(indexPath.section), ячейка = \(indexPath.row)"
-//        context.image = post[indexPath.row].image
-//        //context.imageToTextPadding
-//        cell.contentConfiguration = context
+
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
+            //cell.setUpCell(self.post[indexPath.row])
+            return cell
+        } else {
+        
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.identifier, for: indexPath) as! CustomTableViewCell
-        cell.setUpCell(self.post[indexPath.row])
+        cell.setUpCell(self.post[indexPath.row - 1])
         return cell
+       }
     }
-    
 }
 
 // MARK: - UITableViewDelegate
