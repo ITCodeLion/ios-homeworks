@@ -9,40 +9,44 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    private lazy var profileHeaderView: ProfileHeaderView = {
-        let view = ProfileHeaderView(frame: .zero)
-        view.delegate = self
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    private let post = Posts.makePost()
     
-    private var heightConstraint: NSLayoutConstraint?
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.backgroundColor = .systemGray5
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.identifier)
+        
+        return tableView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemGray5
+        layout()
         self.setupNavigationBar()
-        self.setupView()
         self.tapGesture()
     }
+    
+    private func layout() {
+        
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+// MARK: - NavigationBar and tapGesture for keyboard
     
     private func setupNavigationBar() {
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationItem.title = "Profile"
         self.navigationController?.navigationBar.isTranslucent = false
-    }
-    
-    private func setupView() {
-        self.view.backgroundColor = .systemGray5
-        
-        self.view.addSubview(self.profileHeaderView)
-        
-        let topConstraint = self.profileHeaderView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = self.profileHeaderView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor)
-        let trailingConstraint = self.profileHeaderView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
-        self.heightConstraint = self.profileHeaderView.heightAnchor.constraint(equalToConstant: 234)
-        
-        NSLayoutConstraint.activate([ topConstraint, leadingConstraint, trailingConstraint, self.heightConstraint].compactMap({ $0 }))
-        
     }
     
     private func tapGesture() {
@@ -52,17 +56,43 @@ class ProfileViewController: UIViewController {
     
 }
 
-// MARK: - ProfileHeaderViewProtocol
+// MARK: - UITableViewDataSource
 
-extension ProfileViewController: ProfileHeaderViewProtocol {
+extension ProfileViewController: UITableViewDataSource {
     
-    func didTapStatusButton(textFieldIsVisible: Bool, completion: @escaping () -> ()) {
-        self.heightConstraint?.constant = textFieldIsVisible ? 288 : 234
-        
-        UIView.animate(withDuration: 0.3, delay: 0.0) {
-            self.view.layoutIfNeeded()
-        } completion: { _ in
-            completion()
-        }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return post.count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+//        var context: UIListContentConfiguration = cell.defaultContentConfiguration()
+//        context.text = "Секция = \(indexPath.section), ячейка = \(indexPath.row)"
+//        context.image = post[indexPath.row].image
+//        //context.imageToTextPadding
+//        cell.contentConfiguration = context
+        let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.identifier, for: indexPath) as! CustomTableViewCell
+        cell.setUpCell(self.post[indexPath.row])
+        return cell
+    }
+    
+}
+
+// MARK: - UITableViewDelegate
+
+extension ProfileViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        //return UIScreen.main.bounds.width
+        UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let infoHeader = ProfileHeaderView()
+        return infoHeader
     }
 }
