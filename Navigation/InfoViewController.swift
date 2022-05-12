@@ -28,11 +28,15 @@ class InfoViewController: UIViewController {
     }()
     
     private func setupButton() {
+        
         alertButton.addTarget(self, action: #selector(didTapAlertButton), for: .touchUpInside)
-        self.alertButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        self.alertButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-        self.alertButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
-        self.alertButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        NSLayoutConstraint.activate([
+            self.alertButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            self.alertButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            self.alertButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            self.alertButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
     
     @objc private func didTapAlertButton() {

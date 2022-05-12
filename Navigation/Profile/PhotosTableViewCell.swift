@@ -16,7 +16,6 @@ class PhotosTableViewCell: UITableViewCell {
     private let photosLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .green
         label.text = "Photos"
         label.font = UIFont.boldSystemFont(ofSize: 24)
         label.textColor = .black
@@ -30,14 +29,6 @@ class PhotosTableViewCell: UITableViewCell {
             return imageView
         }()
     
-//    private lazy var stackView: UIStackView = {
-//        let stackView = UIStackView()
-//        stackView.axis = .horizontal
-//        stackView.distribution = .fill
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        return stackView
-//    }()
-    
     private lazy var photoCollection: UICollectionView = {
         let photoLayout = UICollectionViewFlowLayout()
         photoLayout.scrollDirection = .horizontal
@@ -45,6 +36,7 @@ class PhotosTableViewCell: UITableViewCell {
         photoCollection.dataSource = self
         photoCollection.delegate = self
         photoCollection.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier)
+        photoCollection.translatesAutoresizingMaskIntoConstraints = false
         return photoCollection
     }()
     
@@ -59,11 +51,8 @@ class PhotosTableViewCell: UITableViewCell {
     
     private func layout() {
         
-//        self.backgroundColor = .systemGray6
-//        stackView.addArrangedSubview(self.photosLabel)
-//        stackView.addArrangedSubview(self.arrowButton)
+        self.backgroundColor = .systemGray6
         
-        //[stackView, photoCollection].forEach { contentView.addSubview($0) }
         [photosLabel, arrowButton, photoCollection].forEach { contentView.addSubview($0) }
         
         let inset: CGFloat = 12
@@ -72,26 +61,18 @@ class PhotosTableViewCell: UITableViewCell {
             photosLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: inset),
             photosLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: inset)
         ])
-        
+
         NSLayoutConstraint.activate([
             arrowButton.centerYAnchor.constraint(equalTo: photosLabel.centerYAnchor),
             arrowButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -inset)
         ])
-        
-//        NSLayoutConstraint.activate([
-//            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: inset),
-//            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: inset),
-//            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -inset),
-//            stackView.heightAnchor.constraint(equalToConstant: 100),
-//            self.arrowButton.centerYAnchor.constraint(equalTo: self.photosLabel.centerYAnchor)
-//        ])
         
         NSLayoutConstraint.activate([
             photoCollection.topAnchor.constraint(equalTo: photosLabel.bottomAnchor, constant: inset),
             photoCollection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: inset),
             photoCollection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -inset),
             photoCollection.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -inset),
-            photoCollection.heightAnchor.constraint(equalToConstant: 200)
+            photoCollection.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
 }
@@ -101,12 +82,12 @@ class PhotosTableViewCell: UITableViewCell {
 extension PhotosTableViewCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        4
+        20
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosCollectionViewCell.identifier, for: indexPath) as! PhotosCollectionViewCell
-        cell.setupCell("f\([indexPath.item])")
+        cell.setupCell("f\(indexPath.item)")
         return cell
     }
 }

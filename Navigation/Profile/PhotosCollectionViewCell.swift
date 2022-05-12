@@ -29,7 +29,6 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     }
 
     private func customizeCell() {
-        contentView.backgroundColor = .black
         
         contentView.addSubview(photoImageView)
         
@@ -41,7 +40,10 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func setupCell(_ photo: String) {
+    func setupCell(_ photo: String, cornerRadius: CGFloat? = nil) {
         photoImageView.image = UIImage(named: photo)
+        if cornerRadius != nil {
+            photoImageView.layer.cornerRadius = cornerRadius!
+        }
     }
 }

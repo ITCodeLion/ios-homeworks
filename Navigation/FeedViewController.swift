@@ -72,16 +72,15 @@ class FeedViewController: UIViewController {
             self.transitionButton.heightAnchor.constraint(equalToConstant: 50),
             self.button2.heightAnchor.constraint(equalToConstant: 50)
         ])
+        
         [transitionButton, button2].forEach { buttonStackView.addArrangedSubview($0) }
-//        self.buttonStackView.addArrangedSubview(self.transitionButton)
-//        self.buttonStackView.addArrangedSubview(self.button2)
         
         NSLayoutConstraint.activate([
-        self.buttonStackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-        self.buttonStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-        self.buttonStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
-        self.buttonStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-        self.buttonStackView.heightAnchor.constraint(equalToConstant: 120)
+            self.buttonStackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            self.buttonStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            self.buttonStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            self.buttonStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.buttonStackView.heightAnchor.constraint(equalToConstant: 120)
         ])
     }
     

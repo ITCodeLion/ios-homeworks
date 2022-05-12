@@ -19,7 +19,6 @@ class LogInViewController: UIViewController {
     
     private lazy var contentView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        //$0.backgroundColor = .blue
         return $0
     }(UIView())
     
@@ -71,7 +70,6 @@ class LogInViewController: UIViewController {
         logInButton.setTitle("Log in", for: .normal)
         logInButton.setTitleColor(.white, for: .normal)
         logInButton.layer.cornerRadius = 10
-        //logInButton.setBackgroundImage(image, for: .normal)
         logInButton.backgroundColor = UIColor(named: "Color")
         logInButton.translatesAutoresizingMaskIntoConstraints = false
 
@@ -123,14 +121,12 @@ class LogInViewController: UIViewController {
     @objc private func kbdShow(notification: NSNotification) {
         if let kbdSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = kbdSize.height * 1.4
-            //scrollView.contentOffset = CGPoint(x: 0, y: (kbdSize.height * 0.1))
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbdSize.height, right: 0)
         }
     }
     
     @objc private func kbdHide() {
         scrollView.contentInset = .zero
-        //scrollView.contentOffset = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
     }
     
@@ -196,7 +192,7 @@ class LogInViewController: UIViewController {
     
     @objc private func didTapLogInButton(_ sender: UIButton) {
         sender.alpha = 0.5
-        let profileVC = ProfileViewController() //PhotosTableController()//
+        let profileVC = ProfileViewController()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { sender.alpha = 1.0
             self.navigationController?.pushViewController(profileVC, animated: true)
         }
