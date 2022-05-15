@@ -13,10 +13,13 @@ final class ProfileHeaderView: UIView {
         let  imageView = UIImageView(image: UIImage(named: "dog"))
         imageView.layer.borderWidth = 3.0
         imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.masksToBounds = false// true???
-        imageView.layer.cornerRadius = 80
+        imageView.layer.masksToBounds = false
+        imageView.layer.cornerRadius = 50
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
+        
+        imageView.isUserInteractionEnabled = true
+        
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
         
@@ -24,11 +27,8 @@ final class ProfileHeaderView: UIView {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.layer.cornerRadius = 10.0
-        label.clipsToBounds = true
         label.text = "Cool dog"
         label.textColor = .black
-        //label.font = UIFont(name: "Zapfino", size: 18)
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -36,11 +36,9 @@ final class ProfileHeaderView: UIView {
     
     private lazy var statusLabel: UILabel = {
         let label = UILabel()
-        label.layer.cornerRadius = 10.0
         label.text = "Waiting for something..."
         label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 14)
-        label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -87,15 +85,7 @@ final class ProfileHeaderView: UIView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        stackView.spacing = 15
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
-    private lazy var horizontalStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 10
+        stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -103,46 +93,79 @@ final class ProfileHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.drawSelf()
+        self.tapAvatar()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) error")
     }
     
+    private var centerXImageAvaConstraint,
+                    centerYImageAvaConstraint,
+                    widthImageAvaConstraint,
+                    heightImageAvaConstraint: NSLayoutConstraint?
+    
     private func drawSelf() {
         
-        self.addSubview(self.horizontalStackView)
-        self.addSubview(self.statusButton)
-        self.addSubview(self.textField)
-        
-        self.horizontalStackView.addArrangedSubview(self.imageView)
-        self.horizontalStackView.addArrangedSubview(self.verticalStackView)
+        [imageView, verticalStackView, statusButton, textField, blackView, crossButton ].forEach { self.addSubview($0) }
         
         self.verticalStackView.addArrangedSubview(self.nameLabel)
         self.verticalStackView.addArrangedSubview(self.statusLabel)
+        
+        // zoom avatar:
+        self.centerXImageAvaConstraint = self.imageView.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 66)
+        self.centerYImageAvaConstraint  = self.imageView.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 66)
+        self.widthImageAvaConstraint = self.imageView.widthAnchor.constraint(equalToConstant: 100)
+        self.heightImageAvaConstraint = self.imageView.heightAnchor.constraint(equalToConstant: 100)
+        
+        NSLayoutConstraint.activate([
+            self.centerXImageAvaConstraint,
+            self.centerYImageAvaConstraint,
+            self.widthImageAvaConstraint,
+            self.heightImageAvaConstraint
+        ].compactMap( {$0} ))
+        
         //stack:
-        let topConstraint = self.horizontalStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8)
-        let leadingConstraint = self.horizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
-        let trailingConstraint = self.horizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
-        let heightConstraint = self.horizontalStackView.heightAnchor.constraint(equalToConstant: 160)
-        //image:
-        let imageViewAspectRatio = self.imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 1.0)
+        NSLayoutConstraint.activate([
+            self.verticalStackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16),
+            self.verticalStackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 132),
+            self.verticalStackView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            self.verticalStackView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+
         //textField:
-        let textFieldTopConstraint = self.textField.topAnchor.constraint(equalTo: self.horizontalStackView.bottomAnchor, constant: 10)
-        let textFieldLeadingConstraint = self.textField.leadingAnchor.constraint(equalTo: self.verticalStackView.leadingAnchor)
-        let textFieldTrailingConstraint = self.textField.trailingAnchor.constraint(equalTo: self.horizontalStackView.trailingAnchor)
-        let heightTextFieldConstraint = self.textField.heightAnchor.constraint(equalToConstant: 40)
+        NSLayoutConstraint.activate([
+            self.textField.topAnchor.constraint(equalTo: self.verticalStackView.bottomAnchor, constant: 10),
+            self.textField.leadingAnchor.constraint(equalTo: self.verticalStackView.leadingAnchor),
+            self.textField.trailingAnchor.constraint(equalTo: self.verticalStackView.trailingAnchor),
+            self.textField.heightAnchor.constraint(equalToConstant: 40)
+        ])
+
         //button:
-        let buttonTopConstraint = self.statusButton.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 20)
-        let leadingButtonConstraint = self.statusButton.leadingAnchor.constraint(equalTo: self.horizontalStackView.leadingAnchor)
-        let trailingButtonConstraint = self.statusButton.trailingAnchor.constraint(equalTo: self.horizontalStackView.trailingAnchor)
-        let heightButtonConstraint = self.statusButton.heightAnchor.constraint(equalToConstant: 50)
-        let bottomButtonConstraint = self.statusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)
+        NSLayoutConstraint.activate([
+            self.statusButton.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 16),
+            self.statusButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            self.statusButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            self.statusButton.heightAnchor.constraint(equalToConstant: 50),
+            self.statusButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+        ])
         
-        NSLayoutConstraint.activate([ textFieldTopConstraint, textFieldLeadingConstraint, textFieldTrailingConstraint, heightTextFieldConstraint])
+        // blackView:
+        NSLayoutConstraint.activate([
+            self.blackView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width),
+            self.blackView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.height)
+        ])
         
-        NSLayoutConstraint.activate([ heightConstraint, topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, buttonTopConstraint, leadingButtonConstraint, trailingButtonConstraint, heightButtonConstraint,bottomButtonConstraint])
+        self.blackView.center = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
         
+        self.imageView.layer.zPosition = 1
+        
+        NSLayoutConstraint.activate([
+            self.crossButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 30),
+            self.crossButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+            self.crossButton.heightAnchor.constraint(equalToConstant: 40),
+            self.crossButton.widthAnchor.constraint(equalToConstant: 40)
+            ])
     }
     
     private func changeStatus() {
@@ -168,5 +191,129 @@ final class ProfileHeaderView: UIView {
             
         }
     }
+    
+// MARK: - for animate avatar:
+    
+    //var bigAvatar: Bool = false
+    weak var delegate: ProfileViewController?
+    
+    private var blackView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .black
+        view.isHidden = true
+        view.alpha = 0
+        return view
+    }()
+    
+    private lazy var crossButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(named: "close")?.withRenderingMode(.alwaysTemplate)
+        button.setBackgroundImage(image, for: .normal)
+        button.tintColor = .systemYellow
+        button.isHidden = true
+        button.alpha = 0
+        button.addTarget(self, action: #selector(self.closeAvatar), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+        
+    }()
+    
+    private func tapAvatar() {
+        print("t")
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapAvatar))
+        self.imageView.addGestureRecognizer(tap)
+    }
+    
+    @objc private func didTapAvatar() {
+        print("tap 1")
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            self.blackView.isHidden = false
+            self.blackView.alpha = 0.6
+            
+            self.imageView.layer.cornerRadius = 0
+            self.crossButton.isHidden = false
+            
+            NSLayoutConstraint.deactivate([
+                self.centerXImageAvaConstraint,
+                self.centerYImageAvaConstraint,
+                self.widthImageAvaConstraint,
+                self.heightImageAvaConstraint
+            ].compactMap( {$0} ))
+            
+            let superViewFrame = (self.superview?.safeAreaLayoutGuide.layoutFrame)!
+            
+            self.centerXImageAvaConstraint?.constant = superViewFrame.width / 2
+            self.centerYImageAvaConstraint?.constant = superViewFrame.height / 2
+            
+            let avatarWidth: CGFloat
+            if superViewFrame.width < superViewFrame.height {
+                avatarWidth = superViewFrame.width
+            } else {
+                avatarWidth = superViewFrame.height
+            }
+            self.widthImageAvaConstraint?.constant = avatarWidth
+            self.heightImageAvaConstraint?.constant = avatarWidth
+            
+            NSLayoutConstraint.activate([
+                self.centerXImageAvaConstraint,
+                self.centerYImageAvaConstraint,
+                self.widthImageAvaConstraint,
+                self.heightImageAvaConstraint
+            ].compactMap( {$0} ))
+            
+            self.layoutIfNeeded()
+        }) { _ in
+            UIView.animate(withDuration: 0.3) {
+                //self.bigAvatar = true
+                self.delegate?.tableView.isScrollEnabled = false
+                self.crossButton.alpha = 1
+                self.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc private func closeAvatar() {
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            NSLayoutConstraint.deactivate([
+                self.centerXImageAvaConstraint,
+                self.centerYImageAvaConstraint,
+                self.widthImageAvaConstraint,
+                self.heightImageAvaConstraint
+            ].compactMap( {$0} ))
+            
+            self.centerXImageAvaConstraint = self.imageView.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 66)
+            self.centerYImageAvaConstraint  = self.imageView.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 66)
+            self.widthImageAvaConstraint = self.imageView.widthAnchor.constraint(equalToConstant: 100)
+            self.heightImageAvaConstraint = self.imageView.heightAnchor.constraint(equalToConstant: 100)
+            
+            NSLayoutConstraint.activate([
+                self.centerXImageAvaConstraint,
+                self.centerYImageAvaConstraint,
+                self.widthImageAvaConstraint,
+                self.heightImageAvaConstraint
+            ].compactMap( {$0} ))
+            
+            //self.bigAvatar = false
+            self.imageView.layer.cornerRadius = 50
+            self.crossButton.alpha = 0
+            self.blackView.alpha = 0
+            self.layoutIfNeeded()
+        }) { _ in
+            UIView.animate(withDuration: 1) {
+                self.delegate?.tableView.isScrollEnabled = true
+                
+                self.blackView.isHidden = true
+                self.crossButton.isHidden = true
+            }
+        }
+    }
 }
 
+//extension ProfileHeaderView: ProfileViewControllerDelegate {
+//    func scroll() {
+//        self.delegate?.tableView.isScrollEnabled.toggle()
+//    }
+//}
