@@ -7,11 +7,17 @@
 
 import UIKit
 
+//protocol ProfileViewControllerDelegate: AnyObject {
+//    func scroll()
+//}
+
 class ProfileViewController: UIViewController {
+    
+    //weak var delegate: ProfileViewControllerDelegate?
 
     private let post = Posts.makePost()
 
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
@@ -27,7 +33,7 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .systemGray5
         layout()
         self.setupNavigationBar()
-        //self.tapGesture()
+        self.tapGesture()
     }
 
     private func layout() {
@@ -50,9 +56,14 @@ class ProfileViewController: UIViewController {
     }
 
     private func tapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self.view, action: #selector(view.endEditing))
-        self.view.addGestureRecognizer(tapGesture)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
+    
+    @objc func dismissKeyboard() {
+           view.endEditing(true)
+       }
 
 }
 
@@ -69,7 +80,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
             return cell
@@ -93,6 +104,13 @@ extension ProfileViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let infoHeader = ProfileHeaderView()
+//        if infoHeader.bigAvatar {
+//            self.tableView.isScrollEnabled = true
+//        } else {
+//            self.tableView.isScrollEnabled = false
+//        }
+        //delegate?.scroll()
+        infoHeader.delegate = self
         return infoHeader
     }
     
@@ -106,3 +124,26 @@ extension ProfileViewController: UITableViewDelegate {
         }
     }
 }
+
+//// MARK: - превью кода
+//
+//import SwiftUI
+//
+//struct SwiftUIController: UIViewControllerRepresentable {
+//    
+//    typealias UIViewControllerType = ProfileViewController
+//    
+//    func makeUIViewController(context: Context) -> ProfileViewController {
+//        let viewController = UIViewControllerType()
+//        return viewController
+//    }
+//    
+//    func updateUIViewController(_ uiViewController: ProfileViewController, context: Context) {
+//    }
+//}
+//
+//struct SwiftUIController_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SwiftUIController().previewInterfaceOrientation(.portrait)
+//    }
+//}
