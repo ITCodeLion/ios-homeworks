@@ -7,7 +7,16 @@
 
 import UIKit
 
+protocol CustomTableViewCellProtocol: AnyObject {
+    func tapPost(cell: CustomTableViewCell)
+    func tapLike(cell: CustomTableViewCell)
+}
+
 class CustomTableViewCell: UITableViewCell {
+    
+    weak var delegate: CustomTableViewCellProtocol?
+    private var tapLikeGesture = UITapGestureRecognizer()
+    private var tapPostGesture = UITapGestureRecognizer()
     
     private let viewPost: UIView = {
         let viewPost = UIView()
@@ -65,6 +74,7 @@ class CustomTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.layout()
+        self.setupGesture()
     }
     
     required init?(coder: NSCoder) {
@@ -121,5 +131,28 @@ class CustomTableViewCell: UITableViewCell {
             viewsLabel.trailingAnchor.constraint(equalTo: viewPost.trailingAnchor, constant: -inset),
             viewsLabel.bottomAnchor.constraint(equalTo: viewPost.bottomAnchor, constant: -inset)
         ])
+    }
+}
+// MARK: - для тапов на лайки и посты.
+extension CustomTableViewCell {
+    private func setupGesture() {
+        self.tapLikeGesture.addTarget(self, action: #selector(self.likesHandleTapGesture(_:)))
+        self.likesLabel.addGestureRecognizer(self.tapLikeGesture)
+        self.likesLabel.isUserInteractionEnabled = true
+        self.tapPostGesture.addTarget(self, action: #selector(self.postsHandleTapGesture(_:)))
+        self.imagePostView.addGestureRecognizer(self.tapPostGesture)
+        self.imagePostView.isUserInteractionEnabled = true
+    }
+
+    @objc func likesHandleTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard self.tapLikeGesture === gestureRecognizer else { return }
+        delegate?.tapLike(cell: self)
+        
+    }
+
+    @objc func postsHandleTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard self.tapPostGesture === gestureRecognizer else { return }
+        delegate?.tapPost(cell: self)
+        
     }
 }

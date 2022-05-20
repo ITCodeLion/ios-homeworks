@@ -7,15 +7,9 @@
 
 import UIKit
 
-//protocol ProfileViewControllerDelegate: AnyObject {
-//    func scroll()
-//}
-
 class ProfileViewController: UIViewController {
     
-    //weak var delegate: ProfileViewControllerDelegate?
-
-    private let post = Posts.makePost()
+    private var post = Posts.makePost()
 
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -88,6 +82,7 @@ extension ProfileViewController: UITableViewDataSource {
 
 
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.identifier, for: indexPath) as! CustomTableViewCell
+            cell.delegate = self
         cell.setUpCell(self.post[indexPath.row - 1])
         return cell
        }
@@ -104,12 +99,6 @@ extension ProfileViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let infoHeader = ProfileHeaderView()
-//        if infoHeader.bigAvatar {
-//            self.tableView.isScrollEnabled = true
-//        } else {
-//            self.tableView.isScrollEnabled = false
-//        }
-        //delegate?.scroll()
         infoHeader.delegate = self
         return infoHeader
     }
@@ -123,6 +112,57 @@ extension ProfileViewController: UITableViewDelegate {
             tableView.allowsSelection = false
         }
     }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        if indexPath.row == 0 {
+            return .none
+        } else {
+            return .delete
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        tableView.beginUpdates()
+        self.post.remove(at: indexPath.row - 1)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
+    }
+}
+// MARK: - для тапов на лайки и посты.
+extension ProfileViewController: CustomTableViewCellProtocol {
+    
+    func tapPost(cell: CustomTableViewCell) {
+        
+        let largePost = PostView()
+        guard let index = self.tableView.indexPath(for: cell)?.row else { return }
+        let indexPath = IndexPath(row: index, section: 0)
+        self.post[indexPath.row - 1].views += 1
+        let postZoom = self.post[indexPath.row - 1]
+
+        largePost.setUpCell(postZoom)
+
+        self.view.addSubview(largePost)
+
+        largePost.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            largePost.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            largePost.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            largePost.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            largePost.topAnchor.constraint(equalTo: view.topAnchor)
+        ])
+
+        self.tableView.reloadRows(at: [indexPath], with: .fade)
+        
+    }
+    
+    func tapLike(cell: CustomTableViewCell) {
+        guard let index = self.tableView.indexPath(for: cell)?.row else { return }
+        let indexPath = IndexPath(row: index, section: 0)
+        self.post[indexPath.row - 1].likes += 1
+        self.tableView.reloadRows(at: [indexPath], with: .fade)
+    }
+    
 }
 
 //// MARK: - превью кода

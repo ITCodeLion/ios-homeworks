@@ -70,6 +70,32 @@ extension PhotosViewController: UICollectionViewDataSource {
         cell.setupCell("f\(indexPath.item)", cornerRadius: 0)
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let zoomCell = ZoomCollectionPhoto()
+        self.view.addSubview(zoomCell)
+        zoomCell.photoZoomCell.image = UIImage(named: "f\(indexPath.item)")
+        
+        navigationController?.navigationBar.isHidden = true
+        
+        NSLayoutConstraint.activate([
+            zoomCell.topAnchor.constraint(equalTo: view.topAnchor),
+            zoomCell.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            zoomCell.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            zoomCell.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        UIView.animate(withDuration: 0.2, animations: {self.view.layoutIfNeeded()}) { _ in
+            UIView.animate(withDuration: 0.5) {
+                zoomCell.buttonCancel.isHidden = false
+                zoomCell.buttonCancel.alpha = 1
+                zoomCell.backgroundColor = .white.withAlphaComponent(0.9)
+                
+//                self.navigationItem.rightBarButtonItems = [
+//                    UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(zoomCell.pressedButton))]
+            }
+        }
+    }
 }
 // MARK: - UICollectionViewDelegateFlowLayout
 

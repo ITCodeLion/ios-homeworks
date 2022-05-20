@@ -98,6 +98,20 @@ class LogInViewController: UIViewController {
         return textFieldStack
     }()
     
+    //This is for password verification:
+    
+    private lazy var warningLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Введите 6 или больше символов"
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private var topButtonConstraint: NSLayoutConstraint?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
@@ -154,7 +168,7 @@ class LogInViewController: UIViewController {
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])// widthAnchor.constraint needs!
+        ])
         
         textFieldStack.addArrangedSubview(nameTextField)
         textFieldStack.addArrangedSubview(passwordTextField)
@@ -164,7 +178,7 @@ class LogInViewController: UIViewController {
             passwordTextField.heightAnchor.constraint(equalToConstant: 50)
         ])
         
-        [textFieldStack, logoImage, logInButton].forEach {contentView.addSubview($0)}
+        [textFieldStack, logoImage, logInButton, warningLabel].forEach {contentView.addSubview($0)}
         
         NSLayoutConstraint.activate([
             logoImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant:  120),
@@ -180,21 +194,93 @@ class LogInViewController: UIViewController {
             textFieldStack.heightAnchor.constraint(equalToConstant: 100)
         ])
         
+        // for change button:
+        self.topButtonConstraint = logInButton.topAnchor.constraint(equalTo: textFieldStack.bottomAnchor, constant:  16)
+        
+        self.topButtonConstraint?.priority = UILayoutPriority(999)
+        
         NSLayoutConstraint.activate([
-            logInButton.topAnchor.constraint(equalTo: textFieldStack.bottomAnchor, constant:  16),
+            topButtonConstraint,
             logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logInButton.heightAnchor.constraint(equalToConstant: 50),
             logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
+        ].compactMap({$0}))
         
+    }
+    
+    // for check password and login:
+    private func passwordValid(_ password: String) -> Bool {
+        let passwordReg = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{6}$" //"(?=.*[0-9]).{1}$"
+        let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordReg)
+        return passwordTest.evaluate(with: password)
+    }
+    //
+    private func emailValid(_ email: String) -> Bool {
+        let emailReg = ".{6,}" //"(?=.*[0-9]).{1}$"
+        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailReg)
+        return emailTest.evaluate(with: email)
     }
     
     @objc private func didTapLogInButton(_ sender: UIButton) {
         sender.alpha = 0.5
-        let profileVC = ProfileViewController()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { sender.alpha = 1.0
+        
+        let topLabelConstraint = self.warningLabel.topAnchor.constraint(equalTo: self.textFieldStack.bottomAnchor, constant: 16)
+        let heightLabelConstraint = self.warningLabel.heightAnchor.constraint(equalToConstant: 40)
+        let leadingLabelConstraint = self.warningLabel.leadingAnchor.constraint(equalTo: self.textFieldStack.leadingAnchor)
+        let trailingLabelConstraint = self.warningLabel.trailingAnchor.constraint(equalTo: self.textFieldStack.trailingAnchor)
+        
+        self.topButtonConstraint = self.logInButton.topAnchor.constraint(equalTo: self.warningLabel.bottomAnchor, constant: 16)
+        
+        if !emailValid(nameTextField.text!) {
+            let alert = UIAlertController(title: "Внимание!", message: "Некорректный email.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok!", style: UIAlertAction.Style.default, handler: {_ in
+                sender.alpha = 1.0
+                self.nameTextField.backgroundColor = .white
+                self.passwordTextField.backgroundColor = .white
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        if !passwordValid(passwordTextField.text!){
+            self.warningLabel.isHidden = false
+            contentView.addSubview(self.warningLabel)
+            self.topButtonConstraint?.isActive = false
+            NSLayoutConstraint.activate([topLabelConstraint, heightLabelConstraint, leadingLabelConstraint, trailingLabelConstraint, topButtonConstraint].compactMap({$0}))
+        } else {
+            self.warningLabel.removeFromSuperview()
+            NSLayoutConstraint.deactivate([topLabelConstraint, heightLabelConstraint, leadingLabelConstraint, trailingLabelConstraint])
+            self.warningLabel.isHidden = true
+        }
+        
+        switch "" {
+        case nameTextField.text!:
+            nameTextField.backgroundColor = .red
+        case passwordTextField.text!:
+            passwordTextField.backgroundColor = .red
+        default:
+            break
+        }
+        // "dog@mail.com" & "Qwerty1$"
+        if self.nameTextField.text! == "dog@mail.com" && self.passwordTextField.text! == "Qwerty1$" {
+            let profileVC = ProfileViewController()
             self.navigationController?.pushViewController(profileVC, animated: true)
+        } else {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                sender.alpha = 1.0
+//                self.nameTextField.backgroundColor = .white
+//                self.passwordTextField.backgroundColor = .white
+//
+//                //self.navigationController?.pushViewController(profileVC, animated: true)
+//            }
+            //sleep(1)
+            let alert = UIAlertController(title: "Внимание!", message: "Не корректный логин или пороль", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok!", style: UIAlertAction.Style.default, handler: {_ in 
+                sender.alpha = 1.0
+                self.nameTextField.backgroundColor = .white
+                self.passwordTextField.backgroundColor = .white
+            }))
+            self.present(alert, animated: true, completion: nil )
         }
     }
 }

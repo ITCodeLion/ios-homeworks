@@ -171,6 +171,7 @@ final class ProfileHeaderView: UIView {
     private func changeStatus() {
 
         if ViewController.statusText == "" {
+            self.textField.vibro()
             statusLabel.text = "Write something..."
             self.statusButton.setTitle("Set status", for: .normal)
         } else {
@@ -180,21 +181,14 @@ final class ProfileHeaderView: UIView {
     }
     
     @objc private func didTapStatusButton() {
-        
         ViewController.statusText = textField.text!
-        
         UIView.animate(withDuration: 0.3, delay: 0.0) {
-            
             self.changeStatus()
-            
         } completion: { _ in
-            
         }
     }
     
 // MARK: - for animate avatar:
-    
-    //var bigAvatar: Bool = false
     weak var delegate: ProfileViewController?
     
     private var blackView: UIView = {
@@ -220,13 +214,13 @@ final class ProfileHeaderView: UIView {
     }()
     
     private func tapAvatar() {
-        print("t")
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapAvatar))
         self.imageView.addGestureRecognizer(tap)
     }
     
     @objc private func didTapAvatar() {
-        print("tap 1")
+        
         UIView.animate(withDuration: 0.5, animations: {
             
             self.blackView.isHidden = false
@@ -311,9 +305,3 @@ final class ProfileHeaderView: UIView {
         }
     }
 }
-
-//extension ProfileHeaderView: ProfileViewControllerDelegate {
-//    func scroll() {
-//        self.delegate?.tableView.isScrollEnabled.toggle()
-//    }
-//}
