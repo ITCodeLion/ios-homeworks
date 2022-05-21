@@ -135,7 +135,7 @@ final class ProfileHeaderView: UIView {
 
         //textField:
         NSLayoutConstraint.activate([
-            self.textField.topAnchor.constraint(equalTo: self.horizontalStackView.bottomAnchor, constant: 10),
+            self.textField.topAnchor.constraint(equalTo: self.horizontalStackView.bottomAnchor),
             self.textField.leadingAnchor.constraint(equalTo: self.verticalStackView.leadingAnchor),
             self.textField.trailingAnchor.constraint(equalTo: self.horizontalStackView.trailingAnchor),
             self.textField.heightAnchor.constraint(equalToConstant: 40)
@@ -143,11 +143,11 @@ final class ProfileHeaderView: UIView {
 
         //button:
         NSLayoutConstraint.activate([
-            self.statusButton.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 20),
+            self.statusButton.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 8),
             self.statusButton.leadingAnchor.constraint(equalTo: self.horizontalStackView.leadingAnchor),
             self.statusButton.trailingAnchor.constraint(equalTo: self.horizontalStackView.trailingAnchor),
             self.statusButton.heightAnchor.constraint(equalToConstant: 50),
-            self.statusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)
+            self.statusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10)
         ])
     }
     

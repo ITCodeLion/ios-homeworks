@@ -22,12 +22,14 @@ class PhotosTableViewCell: UITableViewCell {
         return label
     }()
     
-    private lazy var arrowButton: UIImageView = {
-            let image = UIImage(systemName: "arrow.right")
-            let imageView = UIImageView(image: image)
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            return imageView
-        }()
+    private lazy var arrowButton: UIButton = {
+        var button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setBackgroundImage(UIImage(systemName: "arrow.right"), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(openPhotoGallery), for: .touchUpInside)
+        return button
+    }()
     
     private lazy var photoCollection: UICollectionView = {
         let photoLayout = UICollectionViewFlowLayout()
@@ -51,7 +53,7 @@ class PhotosTableViewCell: UITableViewCell {
     
     private func layout() {
         
-        self.backgroundColor = .systemGray6
+        //self.backgroundColor = .systemGray6
         
         [photosLabel, arrowButton, photoCollection].forEach { contentView.addSubview($0) }
         
@@ -68,12 +70,18 @@ class PhotosTableViewCell: UITableViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            photoCollection.topAnchor.constraint(equalTo: photosLabel.bottomAnchor, constant: inset),
+            photoCollection.topAnchor.constraint(equalTo: photosLabel.bottomAnchor, constant: 4),
             photoCollection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: inset),
             photoCollection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -inset),
-            photoCollection.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -inset),
+            photoCollection.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
             photoCollection.heightAnchor.constraint(equalToConstant: 100)
         ])
+    }
+    //переход по стрелке
+    weak var delegate: PhotosTableViewCellDelegate?
+    
+    @objc private func openPhotoGallery() {
+        delegate?.tapAction()
     }
 }
 
@@ -106,3 +114,9 @@ extension  PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
         inset
     }
 }
+// MARK: - переход по стрелке
+
+protocol PhotosTableViewCellDelegate: AnyObject {
+    func tapAction()
+}
+

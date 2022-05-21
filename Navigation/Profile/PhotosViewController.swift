@@ -52,7 +52,7 @@ class PhotosViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        self.navigationController?.navigationBar.isHidden = true
+        //self.navigationController?.navigationBar.isHidden = true
     }
 
 }
@@ -67,7 +67,7 @@ extension PhotosViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosCollectionViewCell.identifier, for: indexPath) as! PhotosCollectionViewCell
-        cell.setupCell("f\(indexPath.item)", cornerRadius: 0)
+        cell.setupCell("f\(indexPath.item)", cornerRadius: 6)
         return cell
     }
 }
