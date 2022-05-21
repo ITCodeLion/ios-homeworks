@@ -7,7 +7,13 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, PhotosTableViewCellDelegate {
+    
+    func tapAction() {
+        let detailVC = PhotosViewController()
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+
     
     private var post = Posts.makePost()
 
@@ -77,6 +83,7 @@ extension ProfileViewController: UITableViewDataSource {
         
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
+            cell.delegate = self
             return cell
         } else {
 
@@ -106,8 +113,8 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             tableView.deselectRow(at: indexPath, animated: true)
-            let detailVC = PhotosViewController()
-            navigationController?.pushViewController(detailVC, animated: true)
+//            let detailVC = PhotosViewController()
+//            navigationController?.pushViewController(detailVC, animated: true)
         } else {
             tableView.allowsSelection = false
         }

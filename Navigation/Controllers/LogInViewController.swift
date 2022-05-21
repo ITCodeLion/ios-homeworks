@@ -261,19 +261,12 @@ class LogInViewController: UIViewController {
         default:
             break
         }
-        // "dog@mail.com" & "Qwerty1$"
+        
         if self.nameTextField.text! == "dog@mail.com" && self.passwordTextField.text! == "Qwerty1$" {
             let profileVC = ProfileViewController()
             self.navigationController?.pushViewController(profileVC, animated: true)
         } else {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                sender.alpha = 1.0
-//                self.nameTextField.backgroundColor = .white
-//                self.passwordTextField.backgroundColor = .white
-//
-//                //self.navigationController?.pushViewController(profileVC, animated: true)
-//            }
-            //sleep(1)
+
             let alert = UIAlertController(title: "Внимание!", message: "Не корректный логин или пороль", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "Ok!", style: UIAlertAction.Style.default, handler: {_ in 
                 sender.alpha = 1.0
