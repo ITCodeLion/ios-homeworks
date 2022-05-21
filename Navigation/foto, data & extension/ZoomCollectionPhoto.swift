@@ -57,7 +57,18 @@ class ZoomCollectionPhoto: UIView {
         ])
     }
 
+//    @objc func pressedButton() {
+//        self.removeFromSuperview()
+//    }
+    
+    weak var delegate: ZoomCollectionPhotoDelegate?
+    
     @objc func pressedButton() {
-        self.removeFromSuperview()
+        delegate?.didCloseZoom(view: self)
     }
+
+}
+
+protocol ZoomCollectionPhotoDelegate: AnyObject {
+    func didCloseZoom(view: ZoomCollectionPhoto)
 }

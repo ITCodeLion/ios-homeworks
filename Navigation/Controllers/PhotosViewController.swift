@@ -7,7 +7,12 @@
 
 import UIKit
 
-class PhotosViewController: UIViewController {
+class PhotosViewController: UIViewController, ZoomCollectionPhotoDelegate {
+    func didCloseZoom(view: ZoomCollectionPhoto) {
+        view.removeFromSuperview()
+        navigationController?.navigationBar.isHidden = false
+    }
+    
 
     private lazy var photoCollection: UICollectionView = {
         let photoLayout = UICollectionViewFlowLayout()
@@ -74,6 +79,9 @@ extension PhotosViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let zoomCell = ZoomCollectionPhoto()
+        
+        zoomCell.delegate = self
+        
         self.view.addSubview(zoomCell)
         zoomCell.photoZoomCell.image = UIImage(named: "f\(indexPath.item)")
         
@@ -92,7 +100,7 @@ extension PhotosViewController: UICollectionViewDataSource {
                 zoomCell.backgroundColor = .white.withAlphaComponent(0.9)
                 
 //                self.navigationItem.rightBarButtonItems = [
-//                    UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(zoomCell.pressedButton))]
+//                    UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(self.pressedButton))]
             }
         }
     }
