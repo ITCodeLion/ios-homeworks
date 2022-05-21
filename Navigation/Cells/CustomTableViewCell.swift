@@ -7,7 +7,16 @@
 
 import UIKit
 
+protocol CustomTableViewCellProtocol: AnyObject {
+    func tapPost(cell: CustomTableViewCell)
+    func tapLike(cell: CustomTableViewCell)
+}
+
 class CustomTableViewCell: UITableViewCell {
+    
+    weak var delegate: CustomTableViewCellProtocol?
+    private var tapLikeGesture = UITapGestureRecognizer()
+    private var tapPostGesture = UITapGestureRecognizer()
     
     private let viewPost: UIView = {
         let viewPost = UIView()
@@ -27,7 +36,6 @@ class CustomTableViewCell: UITableViewCell {
     private let authorLabel: UILabel = {
         let authorLabel = UILabel()
         authorLabel.translatesAutoresizingMaskIntoConstraints = false
-        //authorLabel.backgroundColor = .green
         authorLabel.text = "AuthorLabel"
         authorLabel.font = UIFont.boldSystemFont(ofSize: 20)
         authorLabel.textColor = .black
@@ -38,7 +46,6 @@ class CustomTableViewCell: UITableViewCell {
     private let descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        //descriptionLabel.backgroundColor = .white
         descriptionLabel.text = "Description Label"
         descriptionLabel.font = UIFont.systemFont(ofSize: 14)
         descriptionLabel.textColor = .systemGray
@@ -49,7 +56,6 @@ class CustomTableViewCell: UITableViewCell {
     private let likesLabel: UILabel = {
         let likesLabel = UILabel()
         likesLabel.translatesAutoresizingMaskIntoConstraints = false
-        //likesLabel.backgroundColor = .yellow
         likesLabel.text = "likes Label"
         likesLabel.font = UIFont.systemFont(ofSize: 16)
         likesLabel.textColor = .black
@@ -59,7 +65,6 @@ class CustomTableViewCell: UITableViewCell {
     private let viewsLabel: UILabel = {
         let viewsLabel = UILabel()
         viewsLabel.translatesAutoresizingMaskIntoConstraints = false
-        //viewsLabel.backgroundColor = .white
         viewsLabel.text = "views Label"
         viewsLabel.font = UIFont.systemFont(ofSize: 16)
         viewsLabel.textColor = .black
@@ -69,6 +74,7 @@ class CustomTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.layout()
+        self.setupGesture()
     }
     
     required init?(coder: NSCoder) {
@@ -97,42 +103,56 @@ class CustomTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             authorLabel.topAnchor.constraint(equalTo: viewPost.topAnchor, constant: inset),
-            //authorLabel.heightAnchor.constraint(equalToConstant: 20),
             authorLabel.leadingAnchor.constraint(equalTo: viewPost.leadingAnchor, constant: inset),
             authorLabel.trailingAnchor.constraint(equalTo: viewPost.trailingAnchor, constant: -inset)
         ])
         
         NSLayoutConstraint.activate([
             imagePostView.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: inset),
-            //imagePostView.centerXAnchor.constraint(equalTo: viewPost.centerXAnchor),
-            //imagePostView.centerYAnchor.constraint(equalTo: viewPost.centerYAnchor),
             imagePostView.leadingAnchor.constraint(equalTo: viewPost.leadingAnchor),
             imagePostView.trailingAnchor.constraint(equalTo: viewPost.trailingAnchor),
             imagePostView.heightAnchor.constraint(equalTo: viewPost.widthAnchor, multiplier: 1.0)
-            //imagePostView.widthAnchor.constraint(equalToConstant: 100)
         ])
         
         NSLayoutConstraint.activate([
             descriptionLabel.topAnchor.constraint(equalTo: imagePostView.bottomAnchor, constant: inset),
-            //descriptionLabel.heightAnchor.constraint(equalToConstant: 50),
             descriptionLabel.leadingAnchor.constraint(equalTo: viewPost.leadingAnchor, constant: inset),
             descriptionLabel.trailingAnchor.constraint(equalTo: viewPost.trailingAnchor, constant: -inset)
         ])
         
         NSLayoutConstraint.activate([
             likesLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: inset),
-            //likesLabel.heightAnchor.constraint(equalToConstant: 20),
-            //likesLabel.widthAnchor.constraint(equalToConstant: 100),
             likesLabel.leadingAnchor.constraint(equalTo: viewPost.leadingAnchor, constant: inset),
             likesLabel.bottomAnchor.constraint(equalTo: viewPost.bottomAnchor, constant: -inset)
         ])
         
         NSLayoutConstraint.activate([
             viewsLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: inset),
-            //viewsLabel.heightAnchor.constraint(equalToConstant: 20),
-            //viewsLabel.widthAnchor.constraint(equalToConstant: 100),
             viewsLabel.trailingAnchor.constraint(equalTo: viewPost.trailingAnchor, constant: -inset),
             viewsLabel.bottomAnchor.constraint(equalTo: viewPost.bottomAnchor, constant: -inset)
         ])
+    }
+}
+// MARK: - для тапов на лайки и посты.
+extension CustomTableViewCell {
+    private func setupGesture() {
+        self.tapLikeGesture.addTarget(self, action: #selector(self.likesHandleTapGesture(_:)))
+        self.likesLabel.addGestureRecognizer(self.tapLikeGesture)
+        self.likesLabel.isUserInteractionEnabled = true
+        self.tapPostGesture.addTarget(self, action: #selector(self.postsHandleTapGesture(_:)))
+        self.imagePostView.addGestureRecognizer(self.tapPostGesture)
+        self.imagePostView.isUserInteractionEnabled = true
+    }
+
+    @objc func likesHandleTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard self.tapLikeGesture === gestureRecognizer else { return }
+        delegate?.tapLike(cell: self)
+        
+    }
+
+    @objc func postsHandleTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard self.tapPostGesture === gestureRecognizer else { return }
+        delegate?.tapPost(cell: self)
+        
     }
 }
