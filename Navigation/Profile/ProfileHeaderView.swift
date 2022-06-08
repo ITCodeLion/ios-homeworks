@@ -13,7 +13,7 @@ final class ProfileHeaderView: UIView {
         let  imageView = UIImageView(image: UIImage(named: "dog"))
         imageView.layer.borderWidth = 3.0
         imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.masksToBounds = false// true???
+        imageView.layer.masksToBounds = false
         imageView.layer.cornerRadius = 80
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
@@ -28,7 +28,6 @@ final class ProfileHeaderView: UIView {
         label.clipsToBounds = true
         label.text = "Cool dog"
         label.textColor = .black
-        //label.font = UIFont(name: "Zapfino", size: 18)
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -120,29 +119,36 @@ final class ProfileHeaderView: UIView {
         
         self.verticalStackView.addArrangedSubview(self.nameLabel)
         self.verticalStackView.addArrangedSubview(self.statusLabel)
+        
         //stack:
-        let topConstraint = self.horizontalStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8)
-        let leadingConstraint = self.horizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
-        let trailingConstraint = self.horizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
-        let heightConstraint = self.horizontalStackView.heightAnchor.constraint(equalToConstant: 160)
+        NSLayoutConstraint.activate([
+            self.horizontalStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+            self.horizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            self.horizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            self.horizontalStackView.heightAnchor.constraint(equalToConstant: 160)
+        ])
+        
         //image:
-        let imageViewAspectRatio = self.imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 1.0)
+        NSLayoutConstraint.activate([
+            self.imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 1.0)
+        ])
+
         //textField:
-        let textFieldTopConstraint = self.textField.topAnchor.constraint(equalTo: self.horizontalStackView.bottomAnchor, constant: 10)
-        let textFieldLeadingConstraint = self.textField.leadingAnchor.constraint(equalTo: self.verticalStackView.leadingAnchor)
-        let textFieldTrailingConstraint = self.textField.trailingAnchor.constraint(equalTo: self.horizontalStackView.trailingAnchor)
-        let heightTextFieldConstraint = self.textField.heightAnchor.constraint(equalToConstant: 40)
+        NSLayoutConstraint.activate([
+            self.textField.topAnchor.constraint(equalTo: self.horizontalStackView.bottomAnchor),
+            self.textField.leadingAnchor.constraint(equalTo: self.verticalStackView.leadingAnchor),
+            self.textField.trailingAnchor.constraint(equalTo: self.horizontalStackView.trailingAnchor),
+            self.textField.heightAnchor.constraint(equalToConstant: 40)
+        ])
+
         //button:
-        let buttonTopConstraint = self.statusButton.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 20)
-        let leadingButtonConstraint = self.statusButton.leadingAnchor.constraint(equalTo: self.horizontalStackView.leadingAnchor)
-        let trailingButtonConstraint = self.statusButton.trailingAnchor.constraint(equalTo: self.horizontalStackView.trailingAnchor)
-        let heightButtonConstraint = self.statusButton.heightAnchor.constraint(equalToConstant: 50)
-        let bottomButtonConstraint = self.statusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)
-        
-        NSLayoutConstraint.activate([ textFieldTopConstraint, textFieldLeadingConstraint, textFieldTrailingConstraint, heightTextFieldConstraint])
-        
-        NSLayoutConstraint.activate([ heightConstraint, topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, buttonTopConstraint, leadingButtonConstraint, trailingButtonConstraint, heightButtonConstraint,bottomButtonConstraint])
-        
+        NSLayoutConstraint.activate([
+            self.statusButton.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 8),
+            self.statusButton.leadingAnchor.constraint(equalTo: self.horizontalStackView.leadingAnchor),
+            self.statusButton.trailingAnchor.constraint(equalTo: self.horizontalStackView.trailingAnchor),
+            self.statusButton.heightAnchor.constraint(equalToConstant: 50),
+            self.statusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10)
+        ])
     }
     
     private func changeStatus() {
